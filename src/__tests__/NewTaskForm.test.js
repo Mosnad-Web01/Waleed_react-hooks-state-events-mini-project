@@ -10,15 +10,15 @@ test("calls the onTaskFormSubmit callback prop when the form is submitted", () =
     <NewTaskForm categories={CATEGORIES} onTaskFormSubmit={onTaskFormSubmit} />
   );
 
-  fireEvent.change(screen.queryByLabelText(/Details/), {
+  fireEvent.change(screen.getByLabelText(/Details/), {
     target: { value: "Pass the tests" },
   });
 
-  fireEvent.change(screen.queryByLabelText(/Category/), {
+  fireEvent.change(screen.getByLabelText(/Category/), {
     target: { value: "Code" },
   });
 
-  fireEvent.submit(screen.queryByText(/Add task/));
+  fireEvent.click(screen.getByRole("button", { name: /add task/i })); // Click the button
 
   expect(onTaskFormSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -33,17 +33,16 @@ test("adds a new item to the list when the form is submitted", () => {
 
   const codeCount = screen.queryAllByText(/Code/).length;
 
-  fireEvent.change(screen.queryByLabelText(/Details/), {
+  fireEvent.change(screen.getByLabelText(/Details/), {
     target: { value: "Pass the tests" },
   });
 
-  fireEvent.change(screen.queryByLabelText(/Category/), {
+  fireEvent.change(screen.getByLabelText(/Category/), {
     target: { value: "Code" },
   });
 
-  fireEvent.submit(screen.queryByText(/Add task/));
+  fireEvent.click(screen.getByRole("button", { name: /add task/i })); // Click the button
 
-  expect(screen.queryByText(/Pass the tests/)).toBeInTheDocument();
-
+  expect(screen.getByText(/Pass the tests/)).toBeInTheDocument();
   expect(screen.queryAllByText(/Code/).length).toBe(codeCount + 1);
 });
